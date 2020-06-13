@@ -1,0 +1,213 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		<link rel="stylesheet" href="Style.css">
+		<link rel="shortcut icon" type="image/x-icon" href="icons/icon2.ico">
+		<meta charset = "utf-8">
+		<title> Admin page </title>
+	</head>
+	
+	<body>
+		<div class = "fixed-top">
+			<nav class="navbar navbar-expand-lg navbar-light bg-light">
+				<img src="icons/icon1.ico" width="100" height="67" alt="">
+				<a class="navbar-brand ml-4" href="#">Навигационная панель</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item active">
+							<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Link</a>
+						</li>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								Dropdown
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+								<a class="dropdown-item" href="#">Action</a>
+								<a class="dropdown-item" href="#">Another action</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="#">Something else here</a>
+							</div>
+						</li>
+					</ul>
+					<form class="form-inline mt-2 mt-md-0">
+						<a class="btn btn btn-outline-danger my-2 my-sm-0" href="http://travkindelivery.std-1056.ist.mospolytech.ru" role="button"> Домашняя страница </a>
+					</form>
+				 </div>
+			</nav>
+		</div>
+	
+		<div class = "container-fluid" style = "margin-top: 100px">
+			<div class = "row mt-5 border-bottom border-primary">
+				<div class = "col text-center">
+					<h2 class = "text-primary"> Предприятия общественного питания города Москвы </h2>
+				</div>
+			</div>
+		
+		
+			<div class = "mt-5 border border-primary ml-3 mr-3">
+				<div class = "row ml-2 mr-2">
+					<div class = "col-md-8 col-12">
+						<h5> Наименование </h5>
+						
+						<div class="input-group mb-3">
+						  <input type="text" id = "name" class="form-control" placeholder="Наименование" aria-label="Наименование" aria-describedby="basic-addon1">
+						</div>
+					</div>
+					
+					<div class = "col-md-4 col-12">
+						<h5> Округ </h5>
+						
+						<select class = "form-control" id = "okrug">
+							<option> Не выбрано </option>
+						</select>
+					</div>
+				</div>
+				
+				<div class = "row ml-2 mr-2 mb-2 mt-2">
+					<div class = "col-md-4 col-6">
+						<h5> Кол-во мест </h5>
+						
+						<div class="input-group mb-3">
+						  <input type="text" id = "fromSeats" class="form-control" placeholder="От" aria-label="От" aria-describedby="basic-addon1">
+						  
+						  <input type="text" id = "toSeats" class="form-control" placeholder="До" aria-label="До" aria-describedby="basic-addon1">
+						</div>
+					</div>
+					
+					<div class = "col-md-4 col-6">
+						<h5> Является сетевым </h5>
+						
+						<select class = "form-control" id = "Net">
+							<option> Не выбрано </option>
+							<option value = "1"> Да </option>
+							<option value = "0"> Нет </option>
+						</select>
+					</div>
+					
+					<div class = "col-md-4 col-12">
+						<h5> Район </h5>
+						
+						<select class = "form-control" id = "rayon">
+							<option> Не выбрано </option>
+						</select>
+					</div>
+				</div>
+				
+				<div class = "row ml-2 mr-2 mb-2 mt-2">
+					<div class = "col-md-4 col-6">
+						<h5> Дата создания </h5>
+						
+						<div class="input-group mb-3">
+						  <input type="text" id = "fromDate" class="form-control" placeholder="С" aria-label="С" aria-describedby="basic-addon1">
+						  
+						  <input type="text" id = "toDate" class="form-control" placeholder="По" aria-label="По" aria-describedby="basic-addon1">
+						</div>
+					</div>
+					
+					<div class = "col-md-4 col-6">
+						<h5> Льготы </h5>
+						
+						<select class="form-control" id="discount">
+							<option> Не выбрано </option>
+							<option value="1"> Да </option>
+							<option value="0"> Нет </option>
+						</select>
+					</div>
+					
+					<div class = "col-md-4 col-12">
+						<h5> Вид объекта </h5>
+						
+						<select class = "form-control" id = "type">
+							<option> Не выбрано </option>
+						</select>
+					</div>
+				</div>
+				
+				<div class = "row">	
+					<div class = "col-md-12 col-12"; align = "center">
+						<button class = "form-control mb-3" id = "finder"> Найти </button>
+					</div>
+				</div>
+			</div>
+			
+			<div class = "mt-5">
+				<div id = "table_Rest">
+				</div>
+				
+				<div id = "Places">		
+				</div>
+			</div>	
+		
+			<div class = "row mt-4">
+				<div class = "col text-center">
+					<button id = "prev"> Previous </button> <button id = "next"> Next </button>
+				</div>
+			</div>
+		</div>
+		
+		<div class = "container-fluid footer mt-5 border-top border-primary">
+			<div class = "row">
+				<div class = "col">
+					<h5 class = "text-center"> Организация &copy;ООО Служба доставки </h5>
+					<h5> Моя почта: <a href = "sascha091001@mail.ru"> sascha091001@mail.ru </a> </h5>
+					<h5> Мой сотовый номер: <a href = "+7 925 038 75 66"> +7 925 038 75 66 </a> </h5>
+				</div>
+			</div>
+		</div>
+		
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Просмотр записи</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div id = "info_table">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Выйти</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal">Подтвердить</button>
+					</div>
+				</div>
+			</div>
+		</div> 
+		
+		<div class="modal fade" id="exampleDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Удаление записи</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div id = "info_table">
+							<p class = "text-danger"> Вы действительно хотите удалить данную запись? </p>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" id = "no" class="btn btn-secondary" data-dismiss="modal">Выйти</button>
+						<button type="button" id = "yes" class="btn btn-primary" data-dismiss="modal">Подтвердить</button>
+					</div>
+				</div>
+			</div>
+		</div> 
+		
+		<script src="Script.js"></script>
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</html>

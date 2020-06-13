@@ -1,0 +1,29 @@
+.row .col-sm-4{
+	border: 1px solid blue;
+}
+
+body{
+	background-image: url(BG2.jpg);
+}
+
+#amount{
+	width: 35px;
+}
+
+.footer{
+	background-color: white;
+}
+
+input[name = name]{
+	width: 100%;
+}
+
+#finder{
+	width: 300px;
+	color: black;
+}
+
+#finder:hover{
+	background-color: blue;
+	color: white;
+}
