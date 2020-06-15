@@ -1,8 +1,15 @@
 let finder = document.getElementById('finder');
-let Rest;
+//let add = document.getElementById('add');
 
+let Res;
 let Nach = 0;
 let Kon = 9;
+
+let Types;
+let Okrugs;
+let Rayons;
+
+let RestDivArr = [];
 
 function getRestaurants(){
 	let AdmArea = document.getElementById('okrug');
@@ -63,6 +70,9 @@ function getRestaurants(){
 				});
 			};
 			
+			Okrugs = filter(AllOkrugs);
+			Rayons = filter(AllRayons);
+			Types = filter(AllTypes);
 			
 			for (let key in filter(AllOkrugs)){
 				let okrug = document.createElement('option');
@@ -137,78 +147,106 @@ function findRestaurants(){
 		</div>	
 	`
 	
+	let obXhr = new XMLHttpRequest();
 	
-	for (let i in Res){
-		if (((Res[i].admArea == Sel_Area) || (Sel_Area == 'Не выбрано')) && ((Res[i].district == Sel_Dist) || (Sel_Dist == 'Не выбрано')) && ((Res[i].typeObject == Sel_Type) || (Sel_Type == 'Не выбрано'))
-			&& ((Res[i].socialPrivileges == Sel_Disc) || (Sel_Disc == 'Не выбрано')) && ((Res[i].name == Sel_Name) || (Sel_Name == ''))  && ((Res[i].seatsCount >= Sel_SeatsFrom) || (Sel_SeatsFrom == ''))
-			&& ((Res[i].seatsCount <= Sel_SeatsTo) || (Sel_SeatsTo == '')) && ((Res[i].created_at >= Sel_DateFrom) || (Sel_DateFrom == '')) && ((Res[i].created_at <= Sel_DateTo) || (Sel_DateTo == ''))){
-		
-			let newDiv = document.createElement('div');
-			newDiv.className = "row border border-primary ml-3 mr-3";
+	obXhr.open('GET', 'http://exam-2020-1-api.std-400.ist.mospolytech.ru/api/data1');
+	obXhr.send();
+	
+	obXhr.onreadystatechange = function(){
+		if(obXhr.readyState != 4) return;
+
+		if(obXhr.response){
+			let result = JSON.parse(obXhr.response);
+			console.log(result);
 			
-			newDiv.innerHTML = `
-				<div class = "col-3 mt-3">
-					<h6> ${Res[i].name} </h6>
-				</div>
-						
-				<div class = "col-2 mt-3">
-					<h6> ${Res[i].typeObject} </h6>
-				</div>
-						
-				<div class = "col-4 mt-3 text-danger">
-					<h6> ${Res[i].address} </h6>
-				</div>
-						
-				<div class = "col-3 mt-2">
-					<button type="button" class="look btn-primary form-control" data-toggle="modal" data-target="#exampleModal">
-						Просм.
-					</button>
-					
-					<button class = "form-control update"> Обнов. </button>
-					
-					<button type="button" class="delete btn-primary form-control" data-toggle="modal" data-target="#exampleDelete">
-						Удален.
-					</button>
-				</div>
-			`
-			
-			RestDivArr.push(newDiv);
-			
-			if (counter < 10){
-				Places.append(newDiv);
+			for (let i = 0; i < result.length - 1; i++){
+				for (let j = 0; j < result.length - 1; j++){
+					if (result[j].rate < result[j+1].rate){
+						let temp = result[j];
+						result[j] = result[j+1]
+						result[j+1] = temp;
+					}
+				}
 			}
 			
-			counter++;
+			Res = result;
+			
+			for (let i in Res){
+				if (((Res[i].admArea == Sel_Area) || (Sel_Area == 'Не выбрано')) && ((Res[i].district == Sel_Dist) || (Sel_Dist == 'Не выбрано')) && ((Res[i].typeObject == Sel_Type) || (Sel_Type == 'Не выбрано'))
+					&& ((Res[i].socialPrivileges == Sel_Disc) || (Sel_Disc == 'Не выбрано')) && ((Res[i].name == Sel_Name) || (Sel_Name == ''))  && ((Res[i].seatsCount >= Sel_SeatsFrom) || (Sel_SeatsFrom == ''))
+					&& ((Res[i].seatsCount <= Sel_SeatsTo) || (Sel_SeatsTo == '')) && ((Res[i].created_at >= Sel_DateFrom) || (Sel_DateFrom == '')) && ((Res[i].created_at <= Sel_DateTo) || (Sel_DateTo == ''))){
+				
+					let newDiv = document.createElement('div');
+					newDiv.className = "row border border-primary ml-3 mr-3";
+					
+					newDiv.innerHTML = `
+						<div class = "col-3 mt-3">
+							<h6> ${Res[i].name} </h6>
+						</div>
+								
+						<div class = "col-3 mt-3">
+							<h6> ${Res[i].typeObject} </h6>
+						</div>
+								
+						<div class = "col-4 mt-3 text-danger">
+							<h6> ${Res[i].address} </h6>
+						</div>
+								
+						<div class = "col-2 mt-2 mb-2">
+							<button type="button" class="look form-control" data-toggle="modal" data-target="#exampleModal">
+								<img src = "look.png" width = "37px"; height = "37px">
+							</button>
+							
+							<button type="button" class="update form-control" data-toggle="modal" data-target="#exampleUpdate">
+								<img src = "redact.png" width = "37px"; height = "37px">
+							</button>
+							
+							<button type="button" class="delete form-control" data-toggle="modal" data-target="#exampleDelete">
+								<img src = "bin.png" width = "37px"; height = "37px">
+							</button>
+						</div>
+					`
+					
+					RestDivArr.push(newDiv);
+					
+					if (counter < 10){
+						Places.append(newDiv);
+					}
+					
+					counter++;
+				}
+			}
+			
+			let next = document.getElementById('next');
+			let previous = document.getElementById('prev');
+			next.addEventListener('click', NextPage);
+			previous.addEventListener('click', PrevPage);
+			//3 Кнопки
+			
+			let butsLook = document.querySelectorAll('.look');
+			let butsUpdate = document.querySelectorAll('.update');
+			let butsDelete = document.querySelectorAll('.delete');
+			
+			for (let but of butsLook){
+				but.addEventListener('click', Look);
+			}
+			
+			for (let but of butsUpdate){
+				but.addEventListener('click', Update);
+			}
+			
+			for (let but of butsDelete){
+				but.addEventListener('click', Delete);
+			}
 		}
-	}
-	
-	let next = document.getElementById('next');
-	let previous = document.getElementById('prev');
-	next.addEventListener('click', NextPage);
-	previous.addEventListener('click', PrevPage);
-	//3 Кнопки
-	
-	let butsLook = document.querySelectorAll('.look');
-	let butsUpdate = document.querySelectorAll('.update');
-	let butsDelete = document.querySelectorAll('.delete');
-	
-	for (let but of butsLook){
-		but.addEventListener('click', Look);
-	}
-	
-	for (let but of butsUpdate){
-		but.addEventListener('click', Update);
-	}
-	
-	for (let but of butsDelete){
-		but.addEventListener('click', Delete);
 	}
 }
 
 function Look(){
 	//alert(1);
-	console.log(event.target);
-	let id = FindId(event.target);
+	console.log(event.target.parentNode);
+	let Restaurant = FindId(event.target.parentNode);
+	let id = Restaurant.id;
 	console.log(id);
 	
 	let NetObj;
@@ -343,22 +381,61 @@ function Look(){
 }
 
 function Update(){
-	alert(2);
-}
-
-function Delete(){   //Не забыть сделать модальное окно
-	let myEvent = event.target;
-	let id = FindId(myEvent);
-	let YesBut = document.getElementById('yes');
-	let NoBut = document.getElementById('no');
+	let myEvent = event.target.parentNode;
+	console.log(myEvent);
+	let Restaurant = FindId(myEvent);
+	console.log(Restaurant);
+	let id = Restaurant.id;
+	console.log(id);
 	
-	//console.log(YesBut);
-	YesBut.onclick = function(){
-		console.log(id);
-		
+	for (let key in Okrugs){
+		let okrug = document.createElement('option');
+		okrug.innerHTML = `
+		<p> ${Okrugs[key]} </p>
+		`
+		myOkrug.append(okrug);
+	}
+	
+	for (let key in Rayons){
+		let rayon = document.createElement('option');
+		rayon.innerHTML = `
+		<p> ${Rayons[key]} </p>
+		`
+		myRayon.append(rayon);
+	}
+	
+	for (let key in Types){
+		let type = document.createElement('option');
+		type.innerHTML = `
+		<p> ${Types[key]} </p>
+		`
+		myType.append(type);
+	}
+
+	let name = document.getElementById('name_R');
+	name.value = Restaurant.name;
+	
+	let company = document.getElementById('company_R');
+	company.value = Restaurant.operatingCompany;
+	
+	myOkrug.value = Restaurant.admArea;
+	myRayon.value = Restaurant.district;
+	myType.value = Restaurant.typeObject;
+	
+	isNet.value = Restaurant.isNetObject;
+	myAddress.value = Restaurant.address;
+	
+	mySeats.value = Restaurant.seatsCount;
+	myPhone.value = Restaurant.publicPhone;
+	mySoc.value = Restaurant.socialPrivileges;
+	
+	Saver.onclick = function(){
 		let obXhr = new XMLHttpRequest();
+	
+		obXhr.open('PUT', 'http://exam-2020-1-api.std-400.ist.mospolytech.ru/api/data1/'+id+'?name='+name.value+'&operatingCompany='+company.value+'&admArea='
+		+myOkrug.value+'&district='+myRayon.value+'&typeObject='+myType.value+'&isNetObject='+isNet.value+'&address='+myAddress.value+'&seatsCount='+mySeats.value
+		+'&publicPhone='+myPhone.value+'&socialPrivileges='+mySoc.value); //Изменение
 		
-		obXhr.open('GET', 'http://exam-2020-1-api.std-400.ist.mospolytech.ru/api/data1/'+id); //Удаление
 		obXhr.send();
 		
 		obXhr.onreadystatechange = function(){
@@ -367,25 +444,82 @@ function Delete(){   //Не забыть сделать модальное ок�
 			if(obXhr.response){
 				let result = JSON.parse(obXhr.response);
 				console.log(result);
-				myEvent.parentNode.parentNode.remove();
+				
+				myEvent.parentNode.parentNode.children[0].children[0].innerText = result.name;
+				myEvent.parentNode.parentNode.children[1].children[0].innerText = result.typeObject;
+				myEvent.parentNode.parentNode.children[2].children[0].innerText = result.address;
+				findRestaurants();
 			}
 		}
 	}
 }
 
-function FindId(taget){
-	let Name = event.target.parentNode.parentNode.children[0].children[0].innerText;    //Если выбираем, то выводится по параметрам поиска
-	let Address = event.target.parentNode.parentNode.children[2].children[0].innerText;
-	let Type = event.target.parentNode.parentNode.children[1].children[0].innerText;
+function Delete(){   //Не забыть сделать модальное окно
+	let myEvent = event.target.parentNode;
+	let Restaurant = FindId(myEvent);
+	let id = Restaurant.id;
+	let YesBut = document.getElementById('yes');
+	
+	YesBut.onclick = function(){
+		let obXhr = new XMLHttpRequest();
 		
-	for (let key in Res){
-		if (Res[key].address == Address && Res[key].name == Name && Res[key].typeObject == Type){
-			Rest = Res[key];
+		obXhr.open('DELETE', 'http://exam-2020-1-api.std-400.ist.mospolytech.ru/api/data1/'+id); //Удаление
+		obXhr.send();
+		
+		obXhr.onreadystatechange = function(){
+			if(obXhr.readyState != 4) return;
+
+			if(obXhr.response){
+				let result = JSON.parse(obXhr.response);
+				//DelId = result;
+				console.log(result);
+				myEvent.parentNode.parentNode.remove();
+				findRestaurants();
+			}
+		}
+		
+		for (let i in RestDivArr){
+			if (RestDivArr[i].children[0].children[0].innerText == Restaurant.name && RestDivArr[i].children[2].children[0].innerText == Restaurant.address){
+				RestDivArr.splice(i, 1);
+			}		
 		}
 	}
+}
+
+function FindId(target){
+	let Name = target.parentNode.parentNode.children[0].children[0].innerText;  
+	let Address = target.parentNode.parentNode.children[2].children[0].innerText;
+	let Type = target.parentNode.parentNode.children[1].children[0].innerText;
 	
-	return Rest.id;
+	/*let obXhr = new XMLHttpRequest();
 	
+	obXhr.open('GET', 'http://exam-2020-1-api.std-400.ist.mospolytech.ru/api/data1');
+	obXhr.send();
+	
+	obXhr.onreadystatechange = function(){
+		if(obXhr.readyState != 4) return;
+		
+		if(obXhr.response){
+			let result = JSON.parse(obXhr.response);
+			Res = result;
+			
+			for (let i = 0; i < result.length; i++){
+				for (let j = 0; j < result.length - 1; j++){
+					if (result[j].rate < result[j+1].rate){
+						let temp = result[j];
+						result[j] = result[j+1]
+						result[j+1] = temp;
+					}
+				}
+			}
+		}
+	}	*/	
+
+	for (let key in Res){
+		if (Res[key].address == Address && Res[key].name == Name && Res[key].typeObject == Type){
+			return Res[key];
+		}
+	}		
 }
 
 function NextPage(){
@@ -458,3 +592,5 @@ function SortByA(result){
 
 getRestaurants();
 finder.addEventListener('click', findRestaurants);
+//setInterval(findRestaurants, 1500);
+//add.addEventListener('click', addToList);

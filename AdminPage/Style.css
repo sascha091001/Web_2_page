@@ -27,3 +27,15 @@ input[name = name]{
 	background-color: blue;
 	color: white;
 }
+
+.look, .delete, .update{
+	width: 40px;
+	height: 40px;
+	display: inline-block;
+	padding: 0;
+}
+
+button > img{
+	
+	vertical-align: middle;
+}

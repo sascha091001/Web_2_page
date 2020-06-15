@@ -20,21 +20,13 @@
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav mr-auto">
 						<li class="nav-item active">
-							<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+							<a class="nav-link" href="#Vibor">Выбор <span class="sr-only">(current)</span></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">Link</a>
+							<a class="nav-link" href="#table_Rest">Рестораны</a>
 						</li>
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Dropdown
-							</a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="#">Action</a>
-								<a class="dropdown-item" href="#">Another action</a>
-								<div class="dropdown-divider"></div>
-								<a class="dropdown-item" href="#">Something else here</a>
-							</div>
+							<a class="nav-link" href="#footer">Контакты</a>
 						</li>
 					</ul>
 					<form class="form-inline mt-2 mt-md-0">
@@ -47,12 +39,12 @@
 		<div class = "container-fluid" style = "margin-top: 100px">
 			<div class = "row mt-5 border-bottom border-primary">
 				<div class = "col text-center">
-					<h2 class = "text-primary"> Предприятия общественного питания города Москвы </h2>
+					<h1 class = "text-danger"> Предприятия общественного питания города Москвы </h1>
 				</div>
 			</div>
 		
 		
-			<div class = "mt-5 border border-primary ml-3 mr-3">
+			<div class = "mt-5 border border-primary ml-3 mr-3" id = "Vibor">
 				<div class = "row ml-2 mr-2">
 					<div class = "col-md-8 col-12">
 						<h5> Наименование </h5>
@@ -144,6 +136,12 @@
 				
 				<div id = "Places">		
 				</div>
+				
+				<div class = "row">
+					<div class = "col">
+						<button type="button" id = "add" class="add form-control" data-toggle="modal" data-target="#exampleCreate"> Добавить новую запись </button>
+					</div>
+				</div>
 			</div>	
 		
 			<div class = "row mt-4">
@@ -153,7 +151,7 @@
 			</div>
 		</div>
 		
-		<div class = "container-fluid footer mt-5 border-top border-primary">
+		<div class = "container-fluid footer mt-5 border-top border-primary" id = "footer">
 			<div class = "row">
 				<div class = "col">
 					<h5 class = "text-center"> Организация &copy;ООО Служба доставки </h5>
@@ -201,6 +199,108 @@
 					<div class="modal-footer">
 						<button type="button" id = "no" class="btn btn-secondary" data-dismiss="modal">Выйти</button>
 						<button type="button" id = "yes" class="btn btn-primary" data-dismiss="modal">Подтвердить</button>
+					</div>
+				</div>
+			</div>
+		</div> 
+		
+		<div class="modal fade" id="exampleUpdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Обновление/создание записи</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div id = "update_table">
+							<div class = "row">
+								<div class = "col-6">
+									<h6 class = "text-danger">Наименование</h6>
+									<input id = "name_R" class = "form-control">
+								</div>
+								
+								<div class = "col-6">
+									<h6 class = "text-danger">Упр. компания</h6>
+									<input id = "company_R" class = "form-control">
+								</div>
+							</div>	
+							
+							<div class = "row mt-3">	
+								<div class = "col-6">
+									<h6 class = "text-danger">Адм. округ</h6>
+									
+									<select class = "form-control" id = "myOkrug">
+										<option> Не выбрано </option>
+									</select>
+								</div>
+								
+								<div class = "col-6">
+									<h6 class = "text-danger">Район</h6>
+									
+									<select class = "form-control" id = "myRayon">
+										<option> Не выбрано </option>
+									</select>
+								</div>
+							</div>
+							
+							<div class = "row mt-3">	
+								<div class = "col-6">
+									<h6 class = "text-danger">Тип</h6>
+									
+									<select class = "form-control" id = "myType">
+										<option> Не выбрано </option>
+									</select>
+								</div>
+								
+								<div class = "col-6">
+									<h6 class = "text-danger">Явл. сетевым</h6>
+									
+									<select class = "form-control" id = "isNet">
+										<option> Не выбрано </option>
+										<option value = "1"> Да </option>
+										<option value = "0"> Нет </option>
+									</select>
+								</div>
+							</div>
+							
+							<div class = "row mt-3">	
+								<div class = "col-6">
+									<h6 class = "text-danger">Адрес</h6>
+									
+									<textarea class = "form-control" id = "myAddress"> </textarea>
+								</div>
+								
+								<div class = "col-6">
+									<h6 class = "text-danger">Число мест</h6>
+									
+									<input class = "form-control" id = "mySeats">
+								</div>
+							</div>
+							
+							<div class = "row mt-3">	
+								<div class = "col-6">
+									<h6 class = "text-danger">Соц. льготы</h6>
+									
+									<select class = "form-control" id = "mySoc">
+										<option> Не выбрано </option>
+										<option value = "1"> Да </option>
+										<option value = "0"> Нет </option>
+									</select>
+								</div>
+								
+								<div class = "col-6">
+									<h6 class = "text-danger">Телефон</h6>
+									
+									<input class = "form-control" id = "myPhone">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Выйти</button>
+						<button type="button" id = "Saver" class="btn btn-primary" data-dismiss="modal">Подтвердить</button>
 					</div>
 				</div>
 			</div>
