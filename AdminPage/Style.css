@@ -23,7 +23,7 @@ input[name = name]{
 	color: black;
 }
 
-#finder:hover{
+#finder:hover, #add:hover{
 	background-color: blue;
 	color: white;
 }
@@ -36,6 +36,14 @@ input[name = name]{
 }
 
 button > img{
-	
 	vertical-align: middle;
+}
+
+#next, #prev{
+	width: 80px;
+	display: inline-block;
+}
+
+#Pnumb{
+	display: inline-block;
 }

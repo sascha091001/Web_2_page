@@ -1,13 +1,16 @@
 let finder = document.getElementById('finder');
-//let add = document.getElementById('add');
+let add = document.getElementById('add');
 
 let Res;
 let Nach = 0;
 let Kon = 9;
+let page = 1;
 
 let Types;
 let Okrugs;
 let Rayons;
+
+let checker1 = 0;
 
 let RestDivArr = [];
 
@@ -117,6 +120,9 @@ function findRestaurants(){
 	
 	let counter = 0;
 	
+	Nach = 0;
+	Kon = 9;
+	
 	RestDivArr = []; //Чистка массива
 	
 	let Places = document.getElementById('Places');
@@ -124,6 +130,8 @@ function findRestaurants(){
 	
 	let MenuBlock = document.getElementById('menu');
 	
+	page = 1;
+	myPage.innerHTML = 1;
 	
 	let tableRest = document.getElementById('table_Rest');
 	
@@ -388,28 +396,32 @@ function Update(){
 	let id = Restaurant.id;
 	console.log(id);
 	
-	for (let key in Okrugs){
-		let okrug = document.createElement('option');
-		okrug.innerHTML = `
-		<p> ${Okrugs[key]} </p>
-		`
-		myOkrug.append(okrug);
-	}
-	
-	for (let key in Rayons){
-		let rayon = document.createElement('option');
-		rayon.innerHTML = `
-		<p> ${Rayons[key]} </p>
-		`
-		myRayon.append(rayon);
-	}
-	
-	for (let key in Types){
-		let type = document.createElement('option');
-		type.innerHTML = `
-		<p> ${Types[key]} </p>
-		`
-		myType.append(type);
+	if (checker1 == 0){
+		for (let key in Okrugs){
+			let okrug = document.createElement('option');
+			okrug.innerHTML = `
+			<p> ${Okrugs[key]} </p>
+			`
+			myOkrug.append(okrug);
+		}
+		
+		for (let key in Rayons){
+			let rayon = document.createElement('option');
+			rayon.innerHTML = `
+			<p> ${Rayons[key]} </p>
+			`
+			myRayon.append(rayon);
+		}
+		
+		for (let key in Types){
+			let type = document.createElement('option');
+			type.innerHTML = `
+			<p> ${Types[key]} </p>
+			`
+			myType.append(type);
+		}
+		
+		checker1++;
 	}
 
 	let name = document.getElementById('name_R');
@@ -429,12 +441,34 @@ function Update(){
 	myPhone.value = Restaurant.publicPhone;
 	mySoc.value = Restaurant.socialPrivileges;
 	
+	myRating.value = Restaurant.rate;
+	myId.value = Restaurant.id;
+	myDiscount.value = Restaurant.socialDiscount;
+	myCreated.value = Restaurant.created_at;
+	myUpdated.value = Restaurant.updated_at;
+	
+	mySet_1.value = Restaurant.set_1;
+	mySet_2.value = Restaurant.set_2;	
+	mySet_3.value = Restaurant.set_3;	
+	mySet_4.value = Restaurant.set_4;	
+	mySet_5.value = Restaurant.set_5;	
+	mySet_6.value = Restaurant.set_6;	
+	mySet_7.value = Restaurant.set_7;	
+	mySet_8.value = Restaurant.set_8;	
+	mySet_9.value = Restaurant.set_9;	
+	mySet_10.value = Restaurant.set_10;	
+	
+	//console.log(elem.getAttribute('Action'));
+	elem.setAttribute('Action', 'http://exam-2020-1-api.std-400.ist.mospolytech.ru/api/data1/'+id);
+	
 	Saver.onclick = function(){
 		let obXhr = new XMLHttpRequest();
-	
-		obXhr.open('PUT', 'http://exam-2020-1-api.std-400.ist.mospolytech.ru/api/data1/'+id+'?name='+name.value+'&operatingCompany='+company.value+'&admArea='
-		+myOkrug.value+'&district='+myRayon.value+'&typeObject='+myType.value+'&isNetObject='+isNet.value+'&address='+myAddress.value+'&seatsCount='+mySeats.value
-		+'&publicPhone='+myPhone.value+'&socialPrivileges='+mySoc.value); //Изменение
+		
+		obXhr.open('PUT', `http://exam-2020-1-api.std-400.ist.mospolytech.ru/api/data1/${id}?name=${name.value}&operatingCompany=${company.value}&admArea=
+		${myOkrug.value}&district=${myRayon.value}&typeObject=${myType.value}&isNetObject=${isNet.value}&address=${myAddress.value}&seatsCount=${mySeats.value}
+		&publicPhone=${myPhone.value}&socialPrivileges=${mySoc.value}&rate=${myRating.value} 
+		&set_1=${mySet_1.value}&set_2=${mySet_2.value}&set_3=${mySet_3.value}&set_4=${mySet_4.value}&set_5=${mySet_5.value}&set_6=${mySet_6.value}
+		&set_7=${mySet_7.value}&set_8=${mySet_8.value}&set_9=${mySet_9.value}&set_10=${mySet_10.value}&socialDiscount=${myDiscount.value}`); //Изменение
 		
 		obXhr.send();
 		
@@ -445,10 +479,19 @@ function Update(){
 				let result = JSON.parse(obXhr.response);
 				console.log(result);
 				
-				myEvent.parentNode.parentNode.children[0].children[0].innerText = result.name;
+				/*myEvent.parentNode.parentNode.children[0].children[0].innerText = result.name;
 				myEvent.parentNode.parentNode.children[1].children[0].innerText = result.typeObject;
-				myEvent.parentNode.parentNode.children[2].children[0].innerText = result.address;
+				myEvent.parentNode.parentNode.children[2].children[0].innerText = result.address;*/
 				findRestaurants();
+				
+				let Chistka = document.querySelectorAll('textarea, select, input');
+				console.log(Chistka);
+				
+				for (let i in Chistka){
+					if (i > 9){
+						Chistka[i].value = '';
+					}
+				}
 			}
 		}
 	}
@@ -477,43 +520,13 @@ function Delete(){   //Не забыть сделать модальное ок�
 				findRestaurants();
 			}
 		}
-		
-		for (let i in RestDivArr){
-			if (RestDivArr[i].children[0].children[0].innerText == Restaurant.name && RestDivArr[i].children[2].children[0].innerText == Restaurant.address){
-				RestDivArr.splice(i, 1);
-			}		
-		}
 	}
 }
 
 function FindId(target){
 	let Name = target.parentNode.parentNode.children[0].children[0].innerText;  
 	let Address = target.parentNode.parentNode.children[2].children[0].innerText;
-	let Type = target.parentNode.parentNode.children[1].children[0].innerText;
-	
-	/*let obXhr = new XMLHttpRequest();
-	
-	obXhr.open('GET', 'http://exam-2020-1-api.std-400.ist.mospolytech.ru/api/data1');
-	obXhr.send();
-	
-	obXhr.onreadystatechange = function(){
-		if(obXhr.readyState != 4) return;
-		
-		if(obXhr.response){
-			let result = JSON.parse(obXhr.response);
-			Res = result;
-			
-			for (let i = 0; i < result.length; i++){
-				for (let j = 0; j < result.length - 1; j++){
-					if (result[j].rate < result[j+1].rate){
-						let temp = result[j];
-						result[j] = result[j+1]
-						result[j+1] = temp;
-					}
-				}
-			}
-		}
-	}	*/	
+	let Type = target.parentNode.parentNode.children[1].children[0].innerText;	
 
 	for (let key in Res){
 		if (Res[key].address == Address && Res[key].name == Name && Res[key].typeObject == Type){
@@ -525,9 +538,11 @@ function FindId(target){
 function NextPage(){
 	console.log(RestDivArr.length);
 	if (RestDivArr.length - Nach > 10){
-		console.log(Nach);
+		page++;
+		console.log(page);
 		Nach = Kon + 1;
 		Kon = Nach + 9;
+		console.log(Nach);
 		
 		let Places = document.getElementById('Places');
 		Places.innerHTML = "";
@@ -553,6 +568,8 @@ function NextPage(){
 		for (let but of butsDelete){
 			but.addEventListener('click', Delete);
 		}
+		
+		myPage.innerText = page;
 	}
 	else{
 		alert('Это последняя страница!');
@@ -562,6 +579,8 @@ function NextPage(){
 
 function PrevPage(){
 	if (Nach > 9){
+		page--;
+		console.log(page);
 		Nach = Nach - 10;
 		Kon = Nach + 9;
 		
@@ -571,10 +590,71 @@ function PrevPage(){
 		for (let i = Nach; i <= Kon; i++){
 			Places.append(RestDivArr[i]);
 		}
+		
+		myPage.innerText = page;
 	}
 	else{
 		alert('Это первая страница!');
 		return;
+	}
+}
+
+function addToList(){
+	if (checker1 == 0){
+		for (let key in Okrugs){
+			let okrug = document.createElement('option');
+			okrug.innerHTML = `
+			<p> ${Okrugs[key]} </p>
+			`
+			myOkrug.append(okrug);
+		}
+		
+		for (let key in Rayons){
+			let rayon = document.createElement('option');
+			rayon.innerHTML = `
+			<p> ${Rayons[key]} </p>
+			`
+			myRayon.append(rayon);
+		}
+		
+		for (let key in Types){
+			let type = document.createElement('option');
+			type.innerHTML = `
+			<p> ${Types[key]} </p>
+			`
+			myType.append(type);
+		}
+	
+		checker1++;
+	}
+	
+	Saver.onclick = function(){
+		let obXhr = new XMLHttpRequest();
+		
+		obXhr.open('POST', `http://exam-2020-1-api.std-400.ist.mospolytech.ru/api/data1?name=${name_R.value}&operatingCompany=${company_R.value}&admArea=
+		${myOkrug.value}&district=${myRayon.value}&typeObject=${myType.value}&isNetObject=${isNet.value}&address=${myAddress.value}&seatsCount=${mySeats.value}
+		&publicPhone=${myPhone.value}&socialPrivileges=${mySoc.value}&rate=${myRating.value} 
+		&set_1=${mySet_1.value}&set_2=${mySet_2.value}&set_3=${mySet_3.value}&set_4=${mySet_4.value}&set_5=${mySet_5.value}&set_6=${mySet_6.value}
+		&set_7=${mySet_7.value}&set_8=${mySet_8.value}&set_9=${mySet_9.value}&set_10=${mySet_10.value}&socialDiscount=${myDiscount.value}`); //Add
+		
+		obXhr.send();
+		
+		obXhr.onreadystatechange = function(){
+			if(obXhr.readyState != 4) return;
+
+			if(obXhr.response){
+				let result = JSON.parse(obXhr.response);
+				console.log(result);
+				findRestaurants();
+			}
+		}
+	}
+	
+	let Chistka = document.querySelectorAll('textarea, select, input');
+	for (let i in Chistka){
+		if (i > 9){
+			Chistka[i].value = '';
+		}
 	}
 }
 
@@ -592,5 +672,4 @@ function SortByA(result){
 
 getRestaurants();
 finder.addEventListener('click', findRestaurants);
-//setInterval(findRestaurants, 1500);
-//add.addEventListener('click', addToList);
+add.addEventListener('click', addToList);
