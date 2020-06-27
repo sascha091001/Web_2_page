@@ -4,6 +4,7 @@ let add = document.getElementById('add');
 let Res;
 let Nach = 0;
 let Kon = 9;
+
 let page = 1;
 
 let Types;
@@ -26,10 +27,15 @@ function getRestaurants(){
 	
 	obXhr.onreadystatechange = function(){
 		if(obXhr.readyState != 4) return;
+		
+		if(obXhr.status != 200){
+			BadAlert();
+		}
 
 		if(obXhr.response){
 			let result = JSON.parse(obXhr.response);
 			console.log(result);
+			//GoodAlert();
 			
 			for (let i = 0; i < result.length - 1; i++){
 				for (let j = 0; j < result.length - 1; j++){
@@ -61,10 +67,6 @@ function getRestaurants(){
 			}, [])
 			
 			SortByA(AllTypes);
-			
-			//console.log(AllOkrugs);
-			//console.log(AllRayons);
-			//console.log(AllTypes);
 			
 			let filter = function(Arr){
 				let temp = {};				
@@ -123,15 +125,18 @@ function findRestaurants(){
 	Nach = 0;
 	Kon = 9;
 	
+	page = 1;
+	
 	RestDivArr = []; //Чистка массива
 	
 	let Places = document.getElementById('Places');
 	Places.innerHTML = "";
 	
-	let MenuBlock = document.getElementById('menu');
+	myPages.innerHTML = '';
 	
-	page = 1;
-	myPage.innerHTML = 1;
+	Alert.innerHTML = ''; //Чистим алерт
+	
+	let MenuBlock = document.getElementById('menu');
 	
 	let tableRest = document.getElementById('table_Rest');
 	
@@ -162,10 +167,15 @@ function findRestaurants(){
 	
 	obXhr.onreadystatechange = function(){
 		if(obXhr.readyState != 4) return;
+		
+		if(obXhr.status != 200){
+			BadAlert();
+		}
 
 		if(obXhr.response){
 			let result = JSON.parse(obXhr.response);
 			console.log(result);
+			GoodAlert();
 			
 			for (let i = 0; i < result.length - 1; i++){
 				for (let j = 0; j < result.length - 1; j++){
@@ -225,33 +235,37 @@ function findRestaurants(){
 				}
 			}
 			
+			let newPage = document.createElement('div');
+			newPage.className = "col text-center";
+			newPage.id = "Paginate";
+			
+			newPage.innerHTML = `
+			
+			<button  class = "form-control" id = "prev"> Пред. </button> <button class = "form-control" id = "next"> След. </button>
+			`
+			
+			myPages.append(newPage);
+			
+			let newEl = document.createElement('div');
+			newEl.id = "Pnum";
+			
+			newEl.innerHTML = `
+			<h5 class = "ml-4"> Номер страницы: <span id = "myPage" class = "text-danger"> 1 </span> </h5>
+			`
+			
+			Paginate.append(newEl);
+			
 			let next = document.getElementById('next');
 			let previous = document.getElementById('prev');
 			next.addEventListener('click', NextPage);
 			previous.addEventListener('click', PrevPage);
-			//3 Кнопки
-			
-			let butsLook = document.querySelectorAll('.look');
-			let butsUpdate = document.querySelectorAll('.update');
-			let butsDelete = document.querySelectorAll('.delete');
-			
-			for (let but of butsLook){
-				but.addEventListener('click', Look);
-			}
-			
-			for (let but of butsUpdate){
-				but.addEventListener('click', Update);
-			}
-			
-			for (let but of butsDelete){
-				but.addEventListener('click', Delete);
-			}
 		}
 	}
 }
 
 function Look(){
 	//alert(1);
+	Alert.innerHTML = '';
 	console.log(event.target.parentNode);
 	let Restaurant = FindId(event.target.parentNode);
 	let id = Restaurant.id;
@@ -273,10 +287,15 @@ function Look(){
 	
 	obXhr.onreadystatechange = function(){
 		if(obXhr.readyState != 4) return;
+		
+		if(obXhr.status != 200){
+			BadAlert();
+		}
 
 		if(obXhr.response){
 			let result = JSON.parse(obXhr.response);
 			console.log(result);
+			GoodAlert();
 			
 			if (result.isNetObject == 0){
 				NetObj = 'Нет';
@@ -389,6 +408,7 @@ function Look(){
 }
 
 function Update(){
+	Alert.innerHTML = '';
 	let myEvent = event.target.parentNode;
 	console.log(myEvent);
 	let Restaurant = FindId(myEvent);
@@ -442,10 +462,7 @@ function Update(){
 	mySoc.value = Restaurant.socialPrivileges;
 	
 	myRating.value = Restaurant.rate;
-	myId.value = Restaurant.id;
 	myDiscount.value = Restaurant.socialDiscount;
-	myCreated.value = Restaurant.created_at;
-	myUpdated.value = Restaurant.updated_at;
 	
 	mySet_1.value = Restaurant.set_1;
 	mySet_2.value = Restaurant.set_2;	
@@ -474,10 +491,15 @@ function Update(){
 		
 		obXhr.onreadystatechange = function(){
 			if(obXhr.readyState != 4) return;
+			
+			if(obXhr.status != 200){
+				BadAlert();
+			}
 
 			if(obXhr.response){
 				let result = JSON.parse(obXhr.response);
 				console.log(result);
+				GoodAlert();
 				
 				/*myEvent.parentNode.parentNode.children[0].children[0].innerText = result.name;
 				myEvent.parentNode.parentNode.children[1].children[0].innerText = result.typeObject;
@@ -485,7 +507,7 @@ function Update(){
 				findRestaurants();
 				
 				let Chistka = document.querySelectorAll('textarea, select, input');
-				console.log(Chistka);
+				//console.log(Chistka);
 				
 				for (let i in Chistka){
 					if (i > 9){
@@ -498,6 +520,7 @@ function Update(){
 }
 
 function Delete(){   //Не забыть сделать модальное окно
+	Alert.innerHTML = '';
 	let myEvent = event.target.parentNode;
 	let Restaurant = FindId(myEvent);
 	let id = Restaurant.id;
@@ -511,9 +534,14 @@ function Delete(){   //Не забыть сделать модальное ок�
 		
 		obXhr.onreadystatechange = function(){
 			if(obXhr.readyState != 4) return;
+			
+			if(obXhr.status != 200){
+				BadAlert();
+			}
 
 			if(obXhr.response){
 				let result = JSON.parse(obXhr.response);
+				GoodAlert();
 				//DelId = result;
 				console.log(result);
 				myEvent.parentNode.parentNode.remove();
@@ -527,6 +555,8 @@ function FindId(target){
 	let Name = target.parentNode.parentNode.children[0].children[0].innerText;  
 	let Address = target.parentNode.parentNode.children[2].children[0].innerText;
 	let Type = target.parentNode.parentNode.children[1].children[0].innerText;	
+	
+	console.log(Name, Address, Type);
 
 	for (let key in Res){
 		if (Res[key].address == Address && Res[key].name == Name && Res[key].typeObject == Type){
@@ -551,22 +581,6 @@ function NextPage(){
 			if (RestDivArr[i] != undefined){
 				Places.append(RestDivArr[i]);
 			}
-		}
-		
-		let butsLook = document.querySelectorAll('.look');
-		let butsUpdate = document.querySelectorAll('.update');
-		let butsDelete = document.querySelectorAll('.delete');
-		
-		for (let but of butsLook){
-			but.addEventListener('click', Look);
-		}
-		
-		for (let but of butsUpdate){
-			but.addEventListener('click', Update);
-		}
-		
-		for (let but of butsDelete){
-			but.addEventListener('click', Delete);
 		}
 		
 		myPage.innerText = page;
@@ -600,6 +614,8 @@ function PrevPage(){
 }
 
 function addToList(){
+	Alert.innerHTML = '';
+	
 	if (checker1 == 0){
 		for (let key in Okrugs){
 			let okrug = document.createElement('option');
@@ -626,25 +642,26 @@ function addToList(){
 		}
 	
 		checker1++;
-	}
+	}	
 	
-	Saver.onclick = function(){
-		let obXhr = new XMLHttpRequest();
-		
-		obXhr.open('POST', `http://exam-2020-1-api.std-400.ist.mospolytech.ru/api/data1?name=${name_R.value}&operatingCompany=${company_R.value}&admArea=
-		${myOkrug.value}&district=${myRayon.value}&typeObject=${myType.value}&isNetObject=${isNet.value}&address=${myAddress.value}&seatsCount=${mySeats.value}
-		&publicPhone=${myPhone.value}&socialPrivileges=${mySoc.value}&rate=${myRating.value} 
-		&set_1=${mySet_1.value}&set_2=${mySet_2.value}&set_3=${mySet_3.value}&set_4=${mySet_4.value}&set_5=${mySet_5.value}&set_6=${mySet_6.value}
-		&set_7=${mySet_7.value}&set_8=${mySet_8.value}&set_9=${mySet_9.value}&set_10=${mySet_10.value}&socialDiscount=${myDiscount.value}`); //Add
-		
-		obXhr.send();
-		
-		obXhr.onreadystatechange = function(){
-			if(obXhr.readyState != 4) return;
+	Saver.onclick = function(){		
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "http://exam-2020-1-api.std-400.ist.mospolytech.ru/api/data1");
+		  
+		let formData = new FormData(elem);
+		xhr.send(formData);
+		  
+		xhr.onreadystatechange = function(){
+			if(xhr.readyState != 4) return;
+			
+			if(xhr.status != 200){
+				BadAlert();
+			}
 
-			if(obXhr.response){
-				let result = JSON.parse(obXhr.response);
+			if(xhr.response){
+				let result = JSON.parse(xhr.response);
 				console.log(result);
+				GoodAlert();
 				findRestaurants();
 			}
 		}
@@ -658,6 +675,7 @@ function addToList(){
 	}
 }
 
+
 function SortByA(result){
 	for (let i = 0; i < result.length - 1; i++){
 		for (let j = 0; j < result.length - 1; j++){
@@ -669,6 +687,79 @@ function SortByA(result){
 		}
 	}
 }
+
+function ButChecker(){
+	butsLook = document.querySelectorAll('.look');
+	let butsUpdate = document.querySelectorAll('.update');
+	let butsDelete = document.querySelectorAll('.delete');
+			
+	for (let but of butsLook){
+		but.addEventListener('click', Look);
+	}
+			
+	for (let but of butsUpdate){
+		but.addEventListener('click', Update);
+	}
+			
+	for (let but of butsDelete){
+		but.addEventListener('click', Delete);
+	}
+}
+
+function BadAlert(){
+	let AlertZone = document.getElementById('Alert');
+			
+	let newAlert = document.createElement('div');
+	newAlert.className = "alert alert-danger alert-dismissible fade show ml-2 mr-2";
+	newAlert.role = "alert";
+			
+	newAlert.innerHTML = `
+		<button type = "button" class = "close" data-dismiss = "alert">
+			&times;
+		</button>
+				
+		<h4 class="alert-heading">Ошибки!</h4>
+		<hr>
+		<p> Данные не загружены </p>
+		<p> Введите другие значения или перезайдите на сайт </p>
+	`
+
+	AlertZone.append(newAlert);
+			
+	setTimeout(function () {
+		AlertZone.innerHTML = '';
+	}, 5000);
+			
+	return;	
+}
+
+function GoodAlert(){
+	let AlertZone = document.getElementById('Alert');
+			
+	let newAlert = document.createElement('div');
+	newAlert.className = "alert alert-success alert-dismissible fade show ml-2 mr-2";
+	newAlert.role = "alert";
+			
+	newAlert.innerHTML = `
+		<button type = "button" class = "close" data-dismiss = "alert">
+			&times;
+		</button>
+				
+		<h4 class="alert-heading">Совершены изменения!</h4>
+		<hr>
+		<p> Данные успешно загружены. </p>
+	`
+
+	AlertZone.append(newAlert);
+			
+	setTimeout(function () {
+		AlertZone.innerHTML = '';
+	}, 5000);
+			
+	return;
+}
+
+setInterval(ButChecker, 250);
 
 getRestaurants();
 finder.addEventListener('click', findRestaurants);

@@ -6,6 +6,7 @@
 		<link rel="shortcut icon" type="image/x-icon" href="icons/icon2.ico">
 		<meta charset = "utf-8">
 		<title> Admin page </title>
+		
 	</head>
 	
 	<body>
@@ -37,7 +38,11 @@
 	
 		<div class = "container-fluid" style = "margin-top: 100px">
 			<div class = "row mt-5 border-bottom border-primary">
-				<div class = "col text-center">
+				<div class = "col-12" id = "Alert">
+
+				</div>
+				
+				<div class = "col-12 text-center">
 					<h1 class = "text-danger"> Предприятия общественного питания города Москвы </h1>
 				</div>
 			</div>
@@ -143,10 +148,8 @@
 				</div>
 			</div>	
 		
-			<div class = "row mt-4">
-				<div class = "col text-center" id = "Paginate">
-					<button  class = "form-control" id = "prev"> Пред. </button> <button class = "form-control" id = "next"> След. </button> <h5 id = "Pnumb" class = "ml-4"> Номер страницы: <span id = "myPage" class = "text-danger"> 1 </span> </h5>
-				</div>
+			<div class = "row mt-4" id = "myPages">
+	
 			</div>
 		</div>
 		
@@ -204,7 +207,7 @@
 		</div> 
 		
 		<div class="modal fade" id="exampleUpdate" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<form id = "elem" action = "http://exam-2020-1-api.std-400.ist.mospolytech.ru/api/data1/" method = "PUT">
+			<form id = "elem" name = "person" action = "http://exam-2020-1-api.std-400.ist.mospolytech.ru/api/data1/" method = "PUT">
 				<div class="modal-dialog modal-lg" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -307,31 +310,11 @@
 											
 										<input class = "form-control" id = "myRating" name = "rate">
 									</div>
-										
-									<div class = "col-6">
-										<h6 class = "text-danger">ID ресторана</h6>
-											
-										<input class = "form-control" id = "myId" name = "id">
-									</div>
-								</div>
-									
-								<div class = "row mt-3">	
+
 									<div class = "col-6">
 										<h6 class = "text-danger">Соц. скидки</h6>
 											
 										<input class = "form-control" id = "myDiscount" name = "socialDiscount">
-									</div>
-										
-									<div class = "col-3">
-										<h6 class = "text-danger">Создан</h6>
-											
-										<input class = "form-control" id = "myCreated" name = "created_at">
-									</div>
-										
-									<div class = "col-3">
-										<h6 class = "text-danger">Обновлён</h6>
-											
-										<input class = "form-control" id = "myUpdated" name = "updated_at">
 									</div>
 								</div>
 								
