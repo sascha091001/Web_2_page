@@ -475,19 +475,19 @@ function Update(){
 	mySet_9.value = Restaurant.set_9;	
 	mySet_10.value = Restaurant.set_10;	
 	
-	//console.log(elem.getAttribute('Action'));
-	elem.setAttribute('Action', 'http://exam-2020-1-api.std-400.ist.mospolytech.ru/api/data1/'+id);
 	
 	Saver.onclick = function(){
 		let obXhr = new XMLHttpRequest();
 		
-		obXhr.open('PUT', `http://exam-2020-1-api.std-400.ist.mospolytech.ru/api/data1/${id}?name=${name.value}&operatingCompany=${company.value}&admArea=
-		${myOkrug.value}&district=${myRayon.value}&typeObject=${myType.value}&isNetObject=${isNet.value}&address=${myAddress.value}&seatsCount=${mySeats.value}
-		&publicPhone=${myPhone.value}&socialPrivileges=${mySoc.value}&rate=${myRating.value} 
-		&set_1=${mySet_1.value}&set_2=${mySet_2.value}&set_3=${mySet_3.value}&set_4=${mySet_4.value}&set_5=${mySet_5.value}&set_6=${mySet_6.value}
-		&set_7=${mySet_7.value}&set_8=${mySet_8.value}&set_9=${mySet_9.value}&set_10=${mySet_10.value}&socialDiscount=${myDiscount.value}`); //Изменение
+		let data = 'name=' + name.value+ '&operatingCompany=' +company.value+ '&admArea=' +myOkrug.value+ '&typeObject='+myType.value+ '&isNetObject=' +isNet.value+ '&address=' +myAddress.value+
+		'&seatsCount=' +mySeats.value+ '&publicPhone=' +myPhone.value+ '&socialPrivileges=' +mySoc.value+ '&rate=' +myRating.value+ '&socialDiscount=' +myDiscount.value+ '&set_1=' +mySet_1.value+
+		'&set_2=' +mySet_2.value+ '&set_3=' +mySet_3.value+ '&set_4=' +mySet_4.value+ '&set_5=' +mySet_5.value+ '&set_6=' +mySet_6.value+ '&set_7=' +mySet_7.value+ '&set_8=' +mySet_8.value+ 
+		'&set_9=' +mySet_9.value+ '&set_10=' +mySet_10.value;
 		
-		obXhr.send();
+		obXhr.open('PUT', 'http://exam-2020-1-api.std-400.ist.mospolytech.ru/api/data1/'+id); //Изменение
+		obXhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+		
+		obXhr.send(data);
 		
 		obXhr.onreadystatechange = function(){
 			if(obXhr.readyState != 4) return;
